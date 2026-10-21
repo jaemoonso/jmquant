@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JM Quant</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-title" content="JM Quant">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0b2a25">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="manifest" href="manifest.json">
+<style>
+  :root { --bg: #0b2a25; --ink: #f4f1e8; --mint: #7fe3c4; }
+  html, body { margin: 0; height: 100%; background: linear-gradient(#0b2a25, #11604f); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }
+  main { min-height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 24px; box-sizing: border-box; text-align: center; }
+  img { width: 96px; height: 96px; border-radius: 22px; box-shadow: 0 6px 24px rgba(0,0,0,.35); }
+  h1 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -.02em; }
+  h1 span { color: var(--mint); font-weight: 700; margin-left: 4px; }
+  p { margin: 0; font-size: 14px; opacity: .8; }
+  a { color: var(--mint); font-weight: 600; text-decoration: none; border: 1px solid rgba(127,227,196,.5); padding: 10px 18px; border-radius: 12px; }
+  @media (prefers-reduced-motion: no-preference) { img { animation: pop .5s ease-out; } @keyframes pop { from { transform: scale(.9); opacity: 0; } } }
+</style>
+</head>
+<body>
+<main>
+  <img src="icon-512.png" alt="">
+  <h1>JM<span>Quant</span></h1>
+  <p>앱으로 이동하는 중…</p>
+  <a id="go" href="https://script.google.com/macros/s/AKfycbwNFCj569IX5Nx9tAeR2ZKetL2P7FuAHc1rYWWHBvMUt0T916M8Ur4UmKBuJwUU-cGt/exec">바로 열기</a>
+</main>
+<script>
+  // 홈 화면 아이콘(apple-touch-icon)만 이 페이지가 맡고, 실제 앱(구글 Apps Script, '나만' 접근)으로 바로 넘긴다.
+  // 이 페이지에는 금융 정보가 없다.
+  setTimeout(function () { location.replace(document.getElementById('go').href); }, 350);
+</script>
+</body>
+</html>
