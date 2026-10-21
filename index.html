@@ -14,29 +14,53 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="manifest" href="manifest.json">
 <style>
-  :root { --bg: #0b2a25; --ink: #f4f1e8; --mint: #7fe3c4; }
-  html, body { margin: 0; height: 100%; background: linear-gradient(#0b2a25, #11604f); color: var(--ink);
+  :root { --ink: #f4f1e8; --mint: #7fe3c4; --soft: rgba(244, 241, 232, .72); }
+  html, body { margin: 0; min-height: 100%; background: linear-gradient(#0b2a25, #11604f) fixed; color: var(--ink);
     font-family: -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }
-  main { min-height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 24px; box-sizing: border-box; text-align: center; }
-  img { width: 96px; height: 96px; border-radius: 22px; box-shadow: 0 6px 24px rgba(0,0,0,.35); }
-  h1 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -.02em; }
+  main { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+    padding: 32px 20px calc(32px + env(safe-area-inset-bottom)); box-sizing: border-box; text-align: center; }
+  .logo { width: 96px; height: 96px; border-radius: 22px; box-shadow: 0 6px 24px rgba(0,0,0,.35); }
+  h1 { margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -.02em; }
   h1 span { color: var(--mint); font-weight: 700; margin-left: 4px; }
-  p { margin: 0; font-size: 14px; opacity: .8; }
-  a { color: var(--mint); font-weight: 600; text-decoration: none; border: 1px solid rgba(127,227,196,.5); padding: 10px 18px; border-radius: 12px; }
-  @media (prefers-reduced-motion: no-preference) { img { animation: pop .5s ease-out; } @keyframes pop { from { transform: scale(.9); opacity: 0; } } }
+  .sub { margin: 0; font-size: 14px; color: var(--soft); }
+  .guide { display: none; width: 100%; max-width: 360px; text-align: left; background: rgba(0,0,0,.18); border-radius: 16px; padding: 16px 18px; box-sizing: border-box; }
+  .guide h2 { margin: 0 0 10px; font-size: 15px; color: var(--mint); }
+  .guide ol { margin: 0; padding-left: 20px; display: grid; gap: 8px; font-size: 14px; line-height: 1.45; }
+  .guide b { color: #fff; }
+  .key { display: inline-block; border: 1px solid rgba(244,241,232,.45); border-radius: 6px; padding: 0 6px; font-size: 13px; }
+  .btn { display: inline-block; color: #0b2a25; background: var(--mint); font-weight: 700; text-decoration: none; padding: 12px 22px; border-radius: 12px; }
+  .standalone .guide, .standalone .btn { display: none !important; }
+  .browser .guide { display: block; }
+  @media (prefers-reduced-motion: no-preference) { .logo { animation: pop .45s ease-out; } @keyframes pop { from { transform: scale(.9); opacity: 0; } } }
 </style>
 </head>
 <body>
 <main>
-  <img src="icon-512.png" alt="">
+  <img class="logo" src="icon-512.png" alt="">
   <h1>JM<span>Quant</span></h1>
-  <p>앱으로 이동하는 중…</p>
-  <a id="go" href="https://script.google.com/macros/s/AKfycbwNFCj569IX5Nx9tAeR2ZKetL2P7FuAHc1rYWWHBvMUt0T916M8Ur4UmKBuJwUU-cGt/exec">바로 열기</a>
+  <p class="sub" id="msg">앱으로 이동하는 중…</p>
+  <section class="guide" aria-label="홈 화면에 추가하는 방법">
+    <h2>홈 화면에 추가하기 (처음 한 번)</h2>
+    <ol>
+      <li>아래쪽(또는 위쪽) <b>공유</b> 버튼 <span class="key">□↑</span> 을 누릅니다.</li>
+      <li>목록을 올려 <b>홈 화면에 추가</b> 를 누릅니다.</li>
+      <li>이름 <b>JM Quant</b>, 아이콘이 초록 Q 인지 확인하고 <b>웹 앱으로 열기</b>는 <b>켠 채로</b> 오른쪽 위 <b>추가</b>.</li>
+      <li>이제 홈 화면의 JM Quant 아이콘을 누르면 바로 앱이 열립니다.</li>
+    </ol>
+  </section>
+  <a class="btn" id="go" href="https://script.google.com/macros/s/AKfycbwNFCj569IX5Nx9tAeR2ZKetL2P7FuAHc1rYWWHBvMUt0T916M8Ur4UmKBuJwUU-cGt/exec">앱 바로 열기</a>
 </main>
 <script>
-  // 홈 화면 아이콘(apple-touch-icon)만 이 페이지가 맡고, 실제 앱(구글 Apps Script, '나만' 접근)으로 바로 넘긴다.
-  // 이 페이지에는 금융 정보가 없다.
-  setTimeout(function () { location.replace(document.getElementById('go').href); }, 350);
+  // 홈 화면 아이콘으로 열었을 때(웹 앱 모드)만 바로 앱으로 넘긴다. 사파리로 그냥 열면 멈춰서 '홈 화면에 추가' 안내를 보여 준다.
+  // 이 페이지에는 금융 정보가 없다(아이콘 + 앱 주소뿐, 앱은 구글 '나만' 접근).
+  var standalone = window.navigator.standalone === true ||
+    (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || /[?&]go=1/.test(location.search);
+  document.body.className = standalone ? 'standalone' : 'browser';
+  if (standalone) {
+    setTimeout(function () { location.replace(document.getElementById('go').href); }, 300);
+  } else {
+    document.getElementById('msg').textContent = '자산 모니터 — 홈 화면 아이콘으로 쓰는 시작 페이지';
+  }
 </script>
 </body>
 </html>
